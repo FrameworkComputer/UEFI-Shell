@@ -27,9 +27,24 @@ env:
   # available in the shell
   # 0xFF = All profiles
   # 0x00 = No profiles
+  #  bit 0 = Drivers1
+  #    Standard set of debug commands.
+  #  bit 1 = Debug1
+  #    Standard set of driver-related commands
+  #    Risky, allows memory access - disable.
+  #  bit 2 = Install1
+  #    Standard set of commands to aid installation.
+  #  bit 3 = Network1
+  #    Standard set of Ipv4 networking-related commands.
+  #  bit 4 = Network2
+  #    Standard set of Ipv6 networking-related commands.
+  #
   # Disable all profiles, the debug profile includes commands like `mm`
   # which can read and write to system memory, which poses security risks.
   SHELL_PROFILE_MASK: 0x00
+  # 0 = Minimal
+  # 1 = Scripting
+  # 2 = Basic
   # 3 = Interactive
   SHELL_SUPPORT_LEVEL: 3
 
