@@ -26,7 +26,10 @@ env:
   # Profile mask and support level can adjust how many commands are
   # available in the shell
   # 0xFF = All profiles
-  SHELL_PROFILE_MASK: 0xFF
+  # 0x00 = No profiles
+  # Disable all profiles, the debug profile includes commands like `mm`
+  # which can read and write to system memory, which poses security risks.
+  SHELL_PROFILE_MASK: 0x00
   # 3 = Interactive
   SHELL_SUPPORT_LEVEL: 3
 
