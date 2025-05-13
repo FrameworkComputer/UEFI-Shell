@@ -70,7 +70,10 @@ jobs:
         source edksetup.sh
         for BUILD_TYPE in ${{ env.BUILD_TYPES }}; do
           for ARCH in ${{ env.ARCHS }} ; do
-            build -a $ARCH -b $BUILD_TYPE -t ${{ env.COMPILER }} -p ShellPkg/ShellPkg.dsc --pcd gEfiShellPkgTokenSpaceGuid.PcdShellScreenLogCount=8 --pcd gEfiShellPkgTokenSpaceGuid.PcdShellSupplier=L"${{ steps.set_version.outputs.edk2_tag }} (https://github.com/pbatard/UEFI-Shell)"
+            build -a $ARCH -b $BUILD_TYPE -t ${{ env.COMPILER }} \
+              -p ShellPkg/ShellPkg.dsc \
+              --pcd gEfiShellPkgTokenSpaceGuid.PcdShellScreenLogCount=8 \
+              --pcd gEfiShellPkgTokenSpaceGuid.PcdShellSupplier=L"${{ steps.set_version.outputs.edk2_tag }} (https://github.com/pbatard/UEFI-Shell)"
           done
         done
 
