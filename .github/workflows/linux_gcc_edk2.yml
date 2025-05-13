@@ -73,7 +73,7 @@ jobs:
             build -a $ARCH -b $BUILD_TYPE -t ${{ env.COMPILER }} \
               -p ShellPkg/ShellPkg.dsc \
               --pcd gEfiShellPkgTokenSpaceGuid.PcdShellScreenLogCount=8 \
-              --pcd gEfiShellPkgTokenSpaceGuid.PcdShellSupplier=L"${{ steps.set_version.outputs.edk2_tag }} (https://github.com/pbatard/UEFI-Shell)"
+              --pcd gEfiShellPkgTokenSpaceGuid.PcdShellSupplier=L"${{ steps.set_version.outputs.edk2_tag }} (https://github.com/FrameworkComputer/UEFI-Shell)"
           done
         done
 
