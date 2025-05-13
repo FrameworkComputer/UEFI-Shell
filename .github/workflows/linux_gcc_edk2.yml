@@ -160,25 +160,25 @@ jobs:
 #       name: ISOs
 #       path: ./*.iso
 
-    - name: Create release blurb
-      run: |
-        printf "**UEFI Shell v%s, release %s**\n\n" ${{ steps.set_version.outputs.shell_version }} ${{ steps.set_version.outputs.shell_release }} > body.txt
-        printf "Built from [%s](https://github.com/tianocore/edk2/releases/tag/%s) and supporting:\n" ${{ steps.set_version.outputs.edk2_tag }} ${{ steps.set_version.outputs.edk2_tag }} >> body.txt
-        for ARCH in ${{ env.ARCHS }}; do
-          printf "* \`%s\`\n" $ARCH >> body.txt
-        done
-        printf "\nsha256sums:\n" >> body.txt
-        printf "\`\`\`\n" >> body.txt
-        sha256sum ./*.efi >> body.txt
-        sha256sum ./*.iso >> body.txt
-        printf "\`\`\`\n" >> body.txt
+#   - name: Create release blurb
+#     run: |
+#       printf "**UEFI Shell v%s, release %s**\n\n" ${{ steps.set_version.outputs.shell_version }} ${{ steps.set_version.outputs.shell_release }} > body.txt
+#       printf "Built from [%s](https://github.com/tianocore/edk2/releases/tag/%s) and supporting:\n" ${{ steps.set_version.outputs.edk2_tag }} ${{ steps.set_version.outputs.edk2_tag }} >> body.txt
+#       for ARCH in ${{ env.ARCHS }}; do
+#         printf "* \`%s\`\n" $ARCH >> body.txt
+#       done
+#       printf "\nsha256sums:\n" >> body.txt
+#       printf "\`\`\`\n" >> body.txt
+#       sha256sum ./*.efi >> body.txt
+#       sha256sum ./*.iso >> body.txt
+#       printf "\`\`\`\n" >> body.txt
 
-    - name: Create release
-      uses: softprops/action-gh-release@v2
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        body_path: ./body.txt
-        files: |
-          ./*.iso
-          ./*.efi
-          ./Version.xml
+#   - name: Create release
+#     uses: softprops/action-gh-release@v2
+#     with:
+#       token: ${{ secrets.GITHUB_TOKEN }}
+#       body_path: ./body.txt
+#       files: |
+#         ./*.iso
+#         ./*.efi
+#         ./Version.xml
