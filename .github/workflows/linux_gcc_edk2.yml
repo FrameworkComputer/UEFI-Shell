@@ -22,6 +22,13 @@ env:
   EDK2_SHELL_VERSION_HEADER: edk2/MdePkg/Include/Protocol/Shell.h
   # Was edk2/ShellPkg/Include/Protocol/EfiShell.h prior to 2016.10.18 
   # enum ShellVersion added on 2009.05.11
+  #
+  # Profile mask and support level can adjust how many commands are
+  # available in the shell
+  # 0xFF = All profiles
+  SHELL_PROFILE_MASK: 0xFF
+  # 3 = Interactive
+  SHELL_SUPPORT_LEVEL: 3
 
 jobs:
   build:
@@ -72,6 +79,8 @@ jobs:
           for ARCH in ${{ env.ARCHS }} ; do
             build -a $ARCH -b $BUILD_TYPE -t ${{ env.COMPILER }} \
               -p ShellPkg/ShellPkg.dsc \
+              --pcd gEfiShellPkgTokenSpaceGuid.PcdShellProfileMask=${{ env.SHELL_PROFILE_MASK }} \
+              --pcd gEfiShellPkgTokenSpaceGuid.PcdShellSupportLevel=${{ env.SHELL_SUPPORT_LEVEL }} \
               --pcd gEfiShellPkgTokenSpaceGuid.PcdShellScreenLogCount=8 \
               --pcd gEfiShellPkgTokenSpaceGuid.PcdShellSupplier=L"${{ steps.set_version.outputs.edk2_tag }} (https://github.com/FrameworkComputer/UEFI-Shell)"
           done
