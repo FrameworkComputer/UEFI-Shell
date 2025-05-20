@@ -113,19 +113,6 @@ jobs:
           mv ./shellaarch64.efi ./shellaa64.efi
         fi
 
-    - name: Display SHA-256
-      run: |
-        for BUILD_TYPE in ${{ env.BUILD_TYPES }}; do
-          sha256sum $BUILD_TYPE/efi/boot/*.efi
-        done
-        sha256sum *.efi
-
-    - name: Upload UEFI artifacts
-      uses: actions/upload-artifact@v4
-      with:
-        name: EFIs
-        path: ./*.efi
-
 #   - name: Download the latest Mosby release
 #     uses: robinraju/release-downloader@v1
 #     with:
@@ -142,26 +129,26 @@ jobs:
 #         sed -i '1,5d' $BUILD_TYPE/Mosby.txt
 #       done
 
-#   - name: Create ISO filesystem structure
-#     run: |
-#       for BUILD_TYPE in ${{ env.BUILD_TYPES }}; do
-#         mkdir -p $BUILD_TYPE/efi/boot
-#         for ARCH in ${{ env.ARCHS }}; do
-#           mv edk2/Build/Shell/${BUILD_TYPE}_${{ env.COMPILER }}/$ARCH/Shell_${{ env.FULL_SHELL_GUID }}.efi $BUILD_TYPE/efi/boot/boot${ARCH,,}.efi
-#         done
-#         if [ -f $BUILD_TYPE/efi/boot/bootaarch64.efi ]; then
-#           mv $BUILD_TYPE/efi/boot/bootaarch64.efi $BUILD_TYPE/efi/boot/bootaa64.efi
-#         fi
-#         printf "*** UEFI Shell v%s, release %s%s ***\n\n" ${{ steps.set_version.outputs.shell_version }} ${{ steps.set_version.outputs.shell_release }} "$( [ $BUILD_TYPE == DEBUG ] && echo ' (DEBUG BUILD)')" > $BUILD_TYPE/README.txt
-#         printf "This bootable image contains builds of the official UEFI Shell, as provided by\n" >> $BUILD_TYPE/README.txt
-#         printf "the Open Source 'EDK2' project (https://github.com/tianocore/edk2).\n\n" >> $BUILD_TYPE/README.txt
-#         printf "More specifically, this release, which we call '%s', was produced using the\n" ${{ steps.set_version.outputs.shell_release }} >> $BUILD_TYPE/README.txt
-#         printf "'%s' version of the EDK2 source available at:\n" ${{ steps.set_version.outputs.edk2_tag }} >> $BUILD_TYPE/README.txt
-#         printf "https://github.com/tianocore/edk2/releases/tag/%s\n\n" ${{ steps.set_version.outputs.edk2_tag }} >> $BUILD_TYPE/README.txt
-#         printf "This image supports the following UEFI platform architectures:\n" >> $BUILD_TYPE/README.txt
-#         for ARCH in ${{ env.ARCHS }}; do
-#           printf "* %s\n" $ARCH >> $BUILD_TYPE/README.txt
-#         done
+    - name: Create ISO filesystem structure
+      run: |
+        for BUILD_TYPE in ${{ env.BUILD_TYPES }}; do
+          mkdir -p $BUILD_TYPE/efi/boot
+          for ARCH in ${{ env.ARCHS }}; do
+            mv edk2/Build/Shell/${BUILD_TYPE}_${{ env.COMPILER }}/$ARCH/Shell_${{ env.FULL_SHELL_GUID }}.efi $BUILD_TYPE/efi/boot/boot${ARCH,,}.efi
+          done
+          if [ -f $BUILD_TYPE/efi/boot/bootaarch64.efi ]; then
+            mv $BUILD_TYPE/efi/boot/bootaarch64.efi $BUILD_TYPE/efi/boot/bootaa64.efi
+          fi
+          printf "*** UEFI Shell v%s, release %s%s ***\n\n" ${{ steps.set_version.outputs.shell_version }} ${{ steps.set_version.outputs.shell_release }} "$( [ $BUILD_TYPE == DEBUG ] && echo ' (DEBUG BUILD)')" > $BUILD_TYPE/README.txt
+          printf "This bootable image contains builds of the official UEFI Shell, as provided by\n" >> $BUILD_TYPE/README.txt
+          printf "the Open Source 'EDK2' project (https://github.com/tianocore/edk2).\n\n" >> $BUILD_TYPE/README.txt
+          printf "More specifically, this release, which we call '%s', was produced using the\n" ${{ steps.set_version.outputs.shell_release }} >> $BUILD_TYPE/README.txt
+          printf "'%s' version of the EDK2 source available at:\n" ${{ steps.set_version.outputs.edk2_tag }} >> $BUILD_TYPE/README.txt
+          printf "https://github.com/tianocore/edk2/releases/tag/%s\n\n" ${{ steps.set_version.outputs.edk2_tag }} >> $BUILD_TYPE/README.txt
+          printf "This image supports the following UEFI platform architectures:\n" >> $BUILD_TYPE/README.txt
+          for ARCH in ${{ env.ARCHS }}; do
+            printf "* %s\n" $ARCH >> $BUILD_TYPE/README.txt
+          done
 #         printf "\nReleases of UEFI Shell now also include Mosby (https://github.com/pbatard/Mosby)\n" >> $BUILD_TYPE/README.txt
 #         printf "to help you update your Secure Boot variables as well as generate and install\n" >> $BUILD_TYPE/README.txt
 #         printf "your own Secure Boot signing key. Just type 'Mosby' to run it.\n" >> $BUILD_TYPE/README.txt
@@ -170,38 +157,44 @@ jobs:
 #         printf "where you can also validate that all of the binaries contained in this image\n" >> $BUILD_TYPE/README.txt
 #         printf "were built from the unmodified EDK2 source, through an automated build process\n" >> $BUILD_TYPE/README.txt
 #         printf "that guarantees that no malicious code can have been injected.\n" >> $BUILD_TYPE/README.txt
-#         printf "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" > Version.xml
-#         printf "<release>\n" >> Version.xml
-#         printf "  <name>%s (%s)</name>\n" ${{ steps.set_version.outputs.shell_release }} ${{ steps.set_version.outputs.edk2_tag }} >> Version.xml
-#         printf "  <shell_version>%s</shell_version>\n" ${{ steps.set_version.outputs.shell_version }} >> Version.xml
-#         printf "  <build_date>%s</build_date>\n" ${{ steps.set_version.outputs.build_date }} >> Version.xml
-#         printf "  <supported_archs>\n" >> Version.xml
-#         for ARCH in ${{ env.ARCHS }}; do
-#           printf "    <arch>%s</arch>\n" $ARCH >> Version.xml
-#         done
-#         printf "  </supported_archs>\n" >> Version.xml
-#         printf "</release>\n" >> Version.xml
-#       done
+          printf "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" > Version.xml
+          printf "<release>\n" >> Version.xml
+          printf "  <name>%s (%s)</name>\n" ${{ steps.set_version.outputs.shell_release }} ${{ steps.set_version.outputs.edk2_tag }} >> Version.xml
+          printf "  <shell_version>%s</shell_version>\n" ${{ steps.set_version.outputs.shell_version }} >> Version.xml
+          printf "  <build_date>%s</build_date>\n" ${{ steps.set_version.outputs.build_date }} >> Version.xml
+          printf "  <supported_archs>\n" >> Version.xml
+          for ARCH in ${{ env.ARCHS }}; do
+            printf "    <arch>%s</arch>\n" $ARCH >> Version.xml
+          done
+          printf "  </supported_archs>\n" >> Version.xml
+          printf "</release>\n" >> Version.xml
+        done
 
-#   - name: Generate ISO images
-#     run: |
-#       for BUILD_TYPE in ${{ env.BUILD_TYPES }}; do
-#         genisoimage -v -V "UEFI SHELL ${{ steps.set_version.outputs.shell_version }} ${{ steps.set_version.outputs.shell_release }} ($BUILD_TYPE)" -JR -o "UEFI-Shell-${{ steps.set_version.outputs.shell_version }}-${{ steps.set_version.outputs.shell_release }}-$BUILD_TYPE.iso" $BUILD_TYPE
-#       done
+    - name: Generate ISO images
+      run: |
+        for BUILD_TYPE in ${{ env.BUILD_TYPES }}; do
+          genisoimage -v -V "UEFI SHELL ${{ steps.set_version.outputs.shell_version }} ${{ steps.set_version.outputs.shell_release }} ($BUILD_TYPE)" -JR -o "UEFI-Shell-${{ steps.set_version.outputs.shell_version }}-${{ steps.set_version.outputs.shell_release }}-$BUILD_TYPE.iso" $BUILD_TYPE
+        done
 
-#   - name: Display SHA-256
-#     run: |
-#       for BUILD_TYPE in ${{ env.BUILD_TYPES }}; do
-#         sha256sum $BUILD_TYPE/efi/boot/*.efi
-#       done
-#       sha256sum *.iso
-#       sha256sum *.efi
+    - name: Display SHA-256
+      run: |
+        for BUILD_TYPE in ${{ env.BUILD_TYPES }}; do
+          sha256sum $BUILD_TYPE/efi/boot/*.efi
+        done
+        sha256sum *.iso
+        sha256sum *.efi
 
-#   - name: Upload ISO artifacts
-#     uses: actions/upload-artifact@v4
-#     with:
-#       name: ISOs
-#       path: ./*.iso
+    - name: Upload ISO artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: ISOs
+        path: ./*.iso
+
+    - name: Upload EFI artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: EFIs
+        path: ./*.efi
 
 #   - name: Create release blurb
 #     run: |
