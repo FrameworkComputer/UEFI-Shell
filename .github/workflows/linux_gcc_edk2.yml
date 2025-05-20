@@ -149,14 +149,14 @@ jobs:
           for ARCH in ${{ env.ARCHS }}; do
             printf "* %s\n" $ARCH >> $BUILD_TYPE/README.txt
           done
-#         printf "\nReleases of UEFI Shell now also include Mosby (https://github.com/pbatard/Mosby)\n" >> $BUILD_TYPE/README.txt
-#         printf "to help you update your Secure Boot variables as well as generate and install\n" >> $BUILD_TYPE/README.txt
-#         printf "your own Secure Boot signing key. Just type 'Mosby' to run it.\n" >> $BUILD_TYPE/README.txt
-#         printf "\nFor more information on how this release was produced, you are invited to\n" >> $BUILD_TYPE/README.txt
-#         printf "visit our official project page at https://github.com/pbatard/UEFI-Shell,\n" >> $BUILD_TYPE/README.txt
-#         printf "where you can also validate that all of the binaries contained in this image\n" >> $BUILD_TYPE/README.txt
-#         printf "were built from the unmodified EDK2 source, through an automated build process\n" >> $BUILD_TYPE/README.txt
-#         printf "that guarantees that no malicious code can have been injected.\n" >> $BUILD_TYPE/README.txt
+          # printf "\nReleases of UEFI Shell now also include Mosby (https://github.com/pbatard/Mosby)\n" >> $BUILD_TYPE/README.txt
+          # printf "to help you update your Secure Boot variables as well as generate and install\n" >> $BUILD_TYPE/README.txt
+          # printf "your own Secure Boot signing key. Just type 'Mosby' to run it.\n" >> $BUILD_TYPE/README.txt
+          # printf "\nFor more information on how this release was produced, you are invited to\n" >> $BUILD_TYPE/README.txt
+          # printf "visit our official project page at https://github.com/pbatard/UEFI-Shell,\n" >> $BUILD_TYPE/README.txt
+          # printf "where you can also validate that all of the binaries contained in this image\n" >> $BUILD_TYPE/README.txt
+          # printf "were built from the unmodified EDK2 source, through an automated build process\n" >> $BUILD_TYPE/README.txt
+          # printf "that guarantees that no malicious code can have been injected.\n" >> $BUILD_TYPE/README.txt
           printf "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" > Version.xml
           printf "<release>\n" >> Version.xml
           printf "  <name>%s (%s)</name>\n" ${{ steps.set_version.outputs.shell_release }} ${{ steps.set_version.outputs.edk2_tag }} >> Version.xml
