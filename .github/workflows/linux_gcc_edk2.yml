@@ -113,6 +113,19 @@ jobs:
           mv ./shellaarch64.efi ./shellaa64.efi
         fi
 
+    - name: Display SHA-256
+      run: |
+        for BUILD_TYPE in ${{ env.BUILD_TYPES }}; do
+          sha256sum $BUILD_TYPE/efi/boot/*.efi
+        done
+        sha256sum *.efi
+
+    - name: Upload UEFI artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: EFIs
+        path: ./*.efi
+
 #   - name: Download the latest Mosby release
 #     uses: robinraju/release-downloader@v1
 #     with:
