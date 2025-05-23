@@ -34,14 +34,18 @@ env:
   #    Risky, allows memory access - disable.
   #  bit 2 = Install1
   #    Standard set of commands to aid installation.
+  #    Includes only: bcfg
   #  bit 3 = Network1
   #    Standard set of Ipv4 networking-related commands.
+  #    Includes: ifconfig, ipconfig, ping
   #  bit 4 = Network2
   #    Standard set of Ipv6 networking-related commands.
+  #    Includes: ifconfig6
   #
-  # Disable all profiles, the debug profile includes commands like `mm`
+  # Disable all profiles, except Install1 the debug profile includes commands like `mm`
   # which can read and write to system memory, which poses security risks.
-  SHELL_PROFILE_MASK: 0x00
+  # Reference: https://uefi.org/sites/default/files/resources/UEFI_Shell_2_2.pdf
+  SHELL_PROFILE_MASK: 0x04
   # 0 = Minimal
   # 1 = Scripting
   # 2 = Basic
